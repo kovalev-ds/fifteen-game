@@ -24,6 +24,8 @@ body {
   grid-template-columns: repeat(var(--size), var(--cell));
   grid-template-rows: repeat(var(--size), var(--cell));
 
+  outline: none;
+
   //   transition: all 0.2s ease;
 
   max-height: calc(
@@ -77,6 +79,8 @@ body {
   align-items: center;
   row-gap: 1rem;
   padding: 1rem 0;
+
+  user-select: none;
 }
 
 .app-title {
