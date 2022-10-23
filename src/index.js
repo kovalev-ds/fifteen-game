@@ -189,7 +189,15 @@ const controls = createElement("div", {
             },
           },
         }),
-        createElement("button", { className: "button", text: "pause" }),
+        createElement("button", {
+          className: "button",
+          text: G_A_M_E.isPlaying ? "pause" : "resume",
+          events: {
+            click: () => {
+              G_A_M_E.playpause();
+            },
+          },
+        }),
         createElement("button", { className: "button", text: "save game" }),
       ],
     }),

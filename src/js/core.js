@@ -30,6 +30,7 @@ export const createGame = (size = 4) => {
   let moves = 0;
   let duration = 0;
   let isPlaying = false;
+  let intervalId;
 
   const canMove = (x, y) => {
     return x >= 0 && x < size && y >= 0 && y < size;
@@ -55,6 +56,9 @@ export const createGame = (size = 4) => {
     get empty() {
       return { ...empty, x: emptyX, y: emptyY };
     },
+    get isPlaying() {
+      return isPlaying;
+    },
     move({ dx, dy }) {
       if (!isPlaying) return;
 
@@ -74,10 +78,23 @@ export const createGame = (size = 4) => {
         });
       }
     },
+    playpause() {
+      isPlaying = !isPlaying;
+    },
     start() {
-      let intervalId = setInterval(() => {
-        duration++;
-        dispatch(TIMECHANGE_EVENT, duration);
+      clearInterval(intervalId);
+
+      isPlaying = true;
+      duration = 0;
+      moves = 0;
+
+      // make timer run on 2 actions (start, pause)
+
+      intervalId = setInterval(() => {
+        if (isPlaying) {
+          duration++;
+          dispatch(TIMECHANGE_EVENT, duration);
+        }
       }, 1000);
 
       const neighbors = [UP, DOWN, RIGHT, LEFT];
@@ -96,8 +113,6 @@ export const createGame = (size = 4) => {
           [emptyX, emptyY, nx, ny] = [nx, ny, emptyX, emptyY];
         }
       }
-
-      isPlaying = true;
 
       dispatch(START_EVENT, matrix);
       dispatch(PLAY_PAUSE_EVENT, isPlaying);
