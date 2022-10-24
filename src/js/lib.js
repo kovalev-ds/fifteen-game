@@ -18,3 +18,5 @@ export const createElement = (tag, options) => {
 
   return el;
 };
+
+export const secToStringTime = (duration) => `${String((duration / 60) | 0).padStart(2, "0")}:${String(duration % 60).padStart(2, "0")}`

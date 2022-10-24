@@ -1,7 +1,28 @@
 @font-face {
   font-family: CeliaGarcia;
   src: url("../fonts/CeliaGarcia.ttf");
-  // format ('truetype');
+}
+
+@mixin media($bp) {
+  @media screen and (min-width: $bp) {
+    @content;
+  }
+}
+
+html {
+  font-size: 13px;
+
+  @include media(400px) {
+    font-size: 14px;
+  }
+
+  @include media(600px) {
+    font-size: 15px;
+  }
+
+  @include media(1000px) {
+    font-size: 16px;
+  }
 }
 
 body {
@@ -11,8 +32,10 @@ body {
 .board {
   --size: 4;
   --gap: 0.75rem;
-  --cell: 100px;
+  --cell: min(15vw, 100px);
   --padding: 1.25rem;
+
+  position: relative;
 
   display: grid;
   grid-gap: var(--gap);
@@ -26,19 +49,13 @@ body {
 
   outline: none;
 
-  //   transition: all 0.2s ease;
 
-  max-height: calc(
-    var(--size) * var(--cell) + (var(--size) - 1) * var(--gap) + var(--padding) *
-      2
-  );
-  max-width: calc(
-    var(--size) * var(--cell) + (var(--size) - 1) * var(--gap) + var(--padding) *
-      2
-  );
+  max-height: calc(var(--size) * var(--cell) + (var(--size) - 1) * var(--gap) + var(--padding) * 2);
+  max-width: calc(var(--size) * var(--cell) + (var(--size) - 1) * var(--gap) + var(--padding) * 2);
 
   &--size-3 {
     --size: 3;
+    --cell: min(20vw, 100px);
   }
 
   &--size-4 {
@@ -47,7 +64,46 @@ body {
 
   &--size-5 {
     --size: 5;
-    --cell: 80px;
+    --gap: 0.5rem;
+    --cell: min(12vw, 80px);
+  }
+
+  &--size-6 {
+    --size: 6;
+    --gap: 0.5rem;
+    --cell: min(12vw, 70px);
+  }
+
+  &--size-7 {
+    --size: 7;
+    --gap: 0.35rem;
+    --cell: min(11vw, 60px);
+  }
+
+  &--size-8 {
+    --size: 8;
+    --gap: 0.35rem;
+    --cell: min(10vw, 50px);
+  }
+
+  &-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba($color: #000000, $alpha: .5);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: inherit;
+
+    &.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
   }
 }
 
@@ -107,7 +163,10 @@ body {
 
 .button {
   min-width: 100px;
-  background-color: rgba(18, 73, 7, 0.17);
+  // background-color: rgba(18, 73, 7, 0.17);
+  // background-color: rgba(18, 73, 7, 1);
+  background-color: #fefefe;
+
   border-radius: 5px;
   text-align: center;
   cursor: pointer;
@@ -119,6 +178,7 @@ body {
   text-transform: uppercase;
   font-weight: 600;
   transition: opacity 0.2s ease;
+
   &:hover {
     opacity: 0.8;
   }

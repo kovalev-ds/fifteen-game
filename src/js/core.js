@@ -30,6 +30,7 @@ export const createGame = (size = 4) => {
   let moves = 0;
   let duration = 0;
   let isPlaying = false;
+  let isStarted = false;
   let intervalId;
 
   const canMove = (x, y) => {
@@ -76,19 +77,27 @@ export const createGame = (size = 4) => {
           dx,
           dy,
         });
+
+        if (this.isSolved) {
+          clearInterval(intervalId);
+          isPlaying = false;
+          dispatch(SOLVED_EVENT)
+        }
       }
     },
     playpause() {
-      isPlaying = !isPlaying;
+      if (isStarted) {
+        isPlaying = !isPlaying;
+        dispatch(PLAY_PAUSE_EVENT, isPlaying)
+      }
     },
     start() {
       clearInterval(intervalId);
 
+      isStarted = true;
       isPlaying = true;
       duration = 0;
       moves = 0;
-
-      // make timer run on 2 actions (start, pause)
 
       intervalId = setInterval(() => {
         if (isPlaying) {
@@ -114,8 +123,8 @@ export const createGame = (size = 4) => {
         }
       }
 
-      dispatch(START_EVENT, matrix);
-      dispatch(PLAY_PAUSE_EVENT, isPlaying);
+      dispatch(START_EVENT);
+      dispatch(PLAY_PAUSE_EVENT);
     },
     subscribe(type, fn) {
       if (!subscribers[type]) {
