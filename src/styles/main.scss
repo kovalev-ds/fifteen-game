@@ -49,9 +49,14 @@ body {
 
   outline: none;
 
-
-  max-height: calc(var(--size) * var(--cell) + (var(--size) - 1) * var(--gap) + var(--padding) * 2);
-  max-width: calc(var(--size) * var(--cell) + (var(--size) - 1) * var(--gap) + var(--padding) * 2);
+  max-height: calc(
+    var(--size) * var(--cell) + (var(--size) - 1) * var(--gap) + var(--padding) *
+      2
+  );
+  max-width: calc(
+    var(--size) * var(--cell) + (var(--size) - 1) * var(--gap) + var(--padding) *
+      2
+  );
 
   &--size-3 {
     --size: 3;
@@ -92,17 +97,32 @@ body {
     top: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba($color: #000000, $alpha: .5);
+    background-color: rgba($color: #000000, $alpha: 0.5);
 
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
     border-radius: inherit;
 
+    transition: 0.2s ease;
+
     &.hidden {
       opacity: 0;
       pointer-events: none;
+    }
+
+    &-title {
+      position: absolute;
+      top: 10%;
+
+      color: #ffffff;
+      text-align: center;
+      font-size: 1.75rem;
+      opacity: 1;
+      padding: 1rem;
+      letter-spacing: 0.05em;
     }
   }
 }
@@ -162,9 +182,6 @@ body {
 }
 
 .button {
-  min-width: 100px;
-  // background-color: rgba(18, 73, 7, 0.17);
-  // background-color: rgba(18, 73, 7, 1);
   background-color: #fefefe;
 
   border-radius: 5px;
@@ -182,6 +199,22 @@ body {
   &:hover {
     opacity: 0.8;
   }
+
+  &--rounded {
+    padding: 0.45rem;
+    min-width: auto;
+    height: 2rem;
+    width: 2rem;
+    border-radius: 100%;
+    background-color: rgba(18, 73, 7, 0.17);
+  }
+}
+
+.info-text {
+  text-align: center;
+  font-size: 1.75rem;
+  padding: 1rem;
+  letter-spacing: 0.05em;
 }
 
 .stack {
@@ -192,8 +225,16 @@ body {
     flex-direction: row;
   }
 
+  &--wrap {
+    flex-wrap: wrap;
+  }
+
   &--align-center {
     align-items: center;
+  }
+
+  &--justify-center {
+    justify-content: center;
   }
 
   &--gap-y-4 {
@@ -207,4 +248,17 @@ body {
   &--gap-x-2 {
     column-gap: 0.5rem;
   }
+
+  &--gap-2 {
+    gap: 0.5rem;
+  }
+}
+
+.py-4 {
+  padding-block: 1rem;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
 }

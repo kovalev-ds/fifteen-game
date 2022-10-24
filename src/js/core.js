@@ -30,7 +30,7 @@ export const createGame = (size = 4) => {
   let moves = 0;
   let duration = 0;
   let isPlaying = false;
-  let isStarted = false;
+  let isGameStarted = false;
   let intervalId;
 
   const canMove = (x, y) => {
@@ -77,24 +77,24 @@ export const createGame = (size = 4) => {
           dx,
           dy,
         });
+      }
 
-        if (this.isSolved) {
-          clearInterval(intervalId);
-          isPlaying = false;
-          dispatch(SOLVED_EVENT)
-        }
+      if (this.isSolved) {
+        isPlaying = false;
+        isGameStarted = false;
+        dispatch(SOLVED_EVENT);
       }
     },
     playpause() {
-      if (isStarted) {
+      if (isGameStarted) {
         isPlaying = !isPlaying;
-        dispatch(PLAY_PAUSE_EVENT, isPlaying)
+        dispatch(PLAY_PAUSE_EVENT);
       }
     },
     start() {
       clearInterval(intervalId);
 
-      isStarted = true;
+      isGameStarted = true;
       isPlaying = true;
       duration = 0;
       moves = 0;
@@ -123,8 +123,8 @@ export const createGame = (size = 4) => {
         }
       }
 
-      dispatch(START_EVENT);
-      dispatch(PLAY_PAUSE_EVENT);
+      dispatch(START_EVENT, matrix);
+      dispatch(PLAY_PAUSE_EVENT, isPlaying);
     },
     subscribe(type, fn) {
       if (!subscribers[type]) {
