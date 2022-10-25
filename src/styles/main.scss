@@ -138,6 +138,8 @@ body {
   font-weight: bold;
   cursor: pointer;
   transition: all 0.15s ease-out 0s;
+  opacity: 0.999;
+  // transform: translate(0, 0);
 
   &:hover {
     background-color: rgba(255, 255, 165, 0.88);
