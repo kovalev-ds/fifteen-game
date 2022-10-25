@@ -1,4 +1,4 @@
-import moveSound from '../audio/zvuk.mp3';
+import moveSound from "../audio/zvuk.mp3";
 
 export const RIGHT = { dx: 0, dy: -1 };
 export const LEFT = { dx: 0, dy: 1 };
@@ -12,11 +12,9 @@ export const PLAY_PAUSE_EVENT = "--playpause";
 export const SOLVED_EVENT = "--solved";
 export const TIMECHANGE_EVENT = "--timechange";
 
-const audio = new Audio();
+const audio = new Audio(moveSound);
 
-audio.src = moveSound;
 audio.load();
-
 
 export const createGame = (size = 4) => {
   const subscribers = {};
@@ -76,6 +74,7 @@ export const createGame = (size = 4) => {
 
       if (canMove(nx, ny)) {
         moves++;
+        audio.currentTime = 0;
         audio.play();
 
         swap(matrix, [nx, ny], [emptyX, emptyY]);
@@ -136,7 +135,8 @@ export const createGame = (size = 4) => {
       dispatch(PLAY_PAUSE_EVENT, isPlaying);
     },
     mute(fn) {
-      audio.muted ? (audio.muted = false) : (audio.muted = true); fn(audio.muted)
+      audio.muted ? (audio.muted = false) : (audio.muted = true);
+      fn(audio.muted);
     },
     subscribe(type, fn) {
       if (!subscribers[type]) {

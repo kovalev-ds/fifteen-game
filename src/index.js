@@ -19,36 +19,24 @@ import {
 const G_A_M_E = createGame();
 
 G_A_M_E.subscribe(MOVE_EVENT, (idx, [x, y], { dx, dy }) => {
-  const tile = tiles[idx];
+  // tiles[idx].style.transform = `translate(${-1 * dy * 105}%, ${
+  //   -1 * dx * 105
+  // }%)`;
 
-  const tileAnimation = tile.animate(
-    [
-      {
-        transform: `translate(${-1 * dy * 105}%, ${-1 * dx * 105}%)`,
-      },
-    ],
-    150
-  );
+  tiles[idx]
+    .animate(
+      [
+        {
+          transform: `translate(${-1 * dy * 105}%, ${-1 * dx * 105}%)`,
+        },
+      ],
+      150
+    )
+    .addEventListener("finish", () => {
+      tiles[idx].style.gridArea = `${x + 1} / ${y + 1}`;
 
-  const handleFinishAnimation = () => {
-    tiles[idx].style.gridArea = `${x + 1} / ${y + 1}`;
-
-    G_A_M_E.isSolved &&
-      tiles.forEach((el) => {
-        el.animate(
-          [
-            {
-              transform: `rotate(360deg)`,
-            },
-          ],
-          250
-        );
-      });
-
-    tileAnimation.removeEventListener("finish", handleFinishAnimation);
-  };
-
-  tileAnimation.addEventListener("finish", handleFinishAnimation);
+      // G_A_M_E.isSolved &&
+    });
 
   movesControl.textContent = String(G_A_M_E.moves);
 });
@@ -88,6 +76,18 @@ G_A_M_E.subscribe(SOLVED_EVENT, () => {
   console.log(
     `You WON!, It takes you ${G_A_M_E.moves} moves and ${G_A_M_E.duration} seconds`
   );
+
+  tiles.forEach((el) => {
+    el.animate(
+      [
+        {
+          transform: `rotate(360deg)`,
+        },
+      ],
+      250
+    );
+  });
+
   overlay.classList.remove("hidden");
   overlayTitle.innerHTML = `Hooray! You solved the puzzle in <b>${secToStringTime(
     G_A_M_E.duration
@@ -107,11 +107,13 @@ const timeControl = createElement("span", { text: "00:00" });
 const soundButton = createElement("button", {
   className: "button button--rounded",
   html:
-    '<svg data-name="Layer 2" id="Layer_2" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:none;stroke:#020202;stroke-linecap:round;stroke-miterlimit:12;stroke-width:32px;}</style></defs><path class="cls-1" d="M239.89,358.6H362a0,0,0,0,1,0,0V641.4a0,0,0,0,1,0,0H239.89a62.81,62.81,0,0,1-62.81-62.81V421.4A62.81,62.81,0,0,1,239.89,358.6Z"/><path class="cls-1" d="M588,408.64V818.16c0,3.19-4.65,5-7.83,3L434.2,699.55"/><path class="cls-1" d="M403.46,672l-42.08-35.52v-273L580.12,178.83c3.18-2,7.83-.18,7.83,3V339.6"/><path class="cls-1" d="M639.3,403.1a91.73,91.73,0,1,1,0,183.46"/><path class="cls-1" d="M639.3,311.21a183.62,183.62,0,0,1,0,367.24"/></svg>'
-  , events: {
+    '<svg data-name="Layer 2" id="Layer_2" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:none;stroke:#020202;stroke-linecap:round;stroke-miterlimit:12;stroke-width:32px;}</style></defs><path class="cls-1" d="M239.89,358.6H362a0,0,0,0,1,0,0V641.4a0,0,0,0,1,0,0H239.89a62.81,62.81,0,0,1-62.81-62.81V421.4A62.81,62.81,0,0,1,239.89,358.6Z"/><path class="cls-1" d="M588,408.64V818.16c0,3.19-4.65,5-7.83,3L434.2,699.55"/><path class="cls-1" d="M403.46,672l-42.08-35.52v-273L580.12,178.83c3.18-2,7.83-.18,7.83,3V339.6"/><path class="cls-1" d="M639.3,403.1a91.73,91.73,0,1,1,0,183.46"/><path class="cls-1" d="M639.3,311.21a183.62,183.62,0,0,1,0,367.24"/></svg>',
+  events: {
     click: () => {
       G_A_M_E.mute((isMuted) => {
-        soundButton.innerHTML = isMuted ? '<svg data-name="Layer 2" id="Layer_2" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:none;stroke:#020202;stroke-linecap:round;stroke-miterlimit:12;stroke-width:32px;}</style></defs><line class="cls-1" x1="644.38" x2="831.85" y1="393.76" y2="606.24"/><line class="cls-1" x1="831.85" x2="644.38" y1="393.76" y2="606.24"/><path class="cls-1" d="M231,358.6H353a0,0,0,0,1,0,0V641.4a0,0,0,0,1,0,0H231a62.81,62.81,0,0,1-62.81-62.81V421.4A62.81,62.81,0,0,1,231,358.6Z"/><path class="cls-1" d="M579,408.64V818.16c0,3.19-4.65,5-7.83,3L425.27,699.55"/><path class="cls-1" d="M394.53,672l-42.08-35.52v-273L571.19,178.83c3.18-2,7.83-.18,7.83,3V339.6"/></svg>' : '<svg data-name="Layer 2" id="Layer_2" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:none;stroke:#020202;stroke-linecap:round;stroke-miterlimit:10;stroke-width:22px;}</style></defs><path class="cls-1" d="M239.89,358.6H362a0,0,0,0,1,0,0V641.4a0,0,0,0,1,0,0H239.89a62.81,62.81,0,0,1-62.81-62.81V421.4A62.81,62.81,0,0,1,239.89,358.6Z"/><path class="cls-1" d="M588,408.64V818.16c0,3.19-4.65,5-7.83,3L434.2,699.55"/><path class="cls-1" d="M403.46,672l-42.08-35.52v-273L580.12,178.83c3.18-2,7.83-.18,7.83,3V339.6"/><path class="cls-1" d="M639.3,403.1a91.73,91.73,0,1,1,0,183.46"/><path class="cls-1" d="M639.3,311.21a183.62,183.62,0,0,1,0,367.24"/></svg>'
+        soundButton.innerHTML = isMuted
+          ? '<svg data-name="Layer 2" id="Layer_2" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:none;stroke:#020202;stroke-linecap:round;stroke-miterlimit:12;stroke-width:32px;}</style></defs><line class="cls-1" x1="644.38" x2="831.85" y1="393.76" y2="606.24"/><line class="cls-1" x1="831.85" x2="644.38" y1="393.76" y2="606.24"/><path class="cls-1" d="M231,358.6H353a0,0,0,0,1,0,0V641.4a0,0,0,0,1,0,0H231a62.81,62.81,0,0,1-62.81-62.81V421.4A62.81,62.81,0,0,1,231,358.6Z"/><path class="cls-1" d="M579,408.64V818.16c0,3.19-4.65,5-7.83,3L425.27,699.55"/><path class="cls-1" d="M394.53,672l-42.08-35.52v-273L571.19,178.83c3.18-2,7.83-.18,7.83,3V339.6"/></svg>'
+          : '<svg data-name="Layer 2" id="Layer_2" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"><defs><style>.cls-1{fill:none;stroke:#020202;stroke-linecap:round;stroke-miterlimit:10;stroke-width:22px;}</style></defs><path class="cls-1" d="M239.89,358.6H362a0,0,0,0,1,0,0V641.4a0,0,0,0,1,0,0H239.89a62.81,62.81,0,0,1-62.81-62.81V421.4A62.81,62.81,0,0,1,239.89,358.6Z"/><path class="cls-1" d="M588,408.64V818.16c0,3.19-4.65,5-7.83,3L434.2,699.55"/><path class="cls-1" d="M403.46,672l-42.08-35.52v-273L580.12,178.83c3.18-2,7.83-.18,7.83,3V339.6"/><path class="cls-1" d="M639.3,403.1a91.73,91.73,0,1,1,0,183.46"/><path class="cls-1" d="M639.3,311.21a183.62,183.62,0,0,1,0,367.24"/></svg>';
       });
       board.focus();
     },
@@ -200,6 +202,30 @@ const board = createElement("div", {
   children: [...tiles, overlay],
   tabindex: "0",
   events: {
+    dragstart: (e) => {
+      const el = tiles.find((el) => el.contains(e.target));
+
+      if (el) {
+        const [x, y] = [
+          Number(el.style.gridRowStart) - 1,
+          Number(el.style.gridColumnStart) - 1,
+        ];
+
+        e.dataTransfer.setData("x", x);
+        e.dataTransfer.setData("y", y);
+      }
+    },
+    dragover: (e) => e.preventDefault(),
+    drop: (e) => {
+      const x = e.dataTransfer.getData("x");
+      const y = e.dataTransfer.getData("y");
+
+      const direction = [UP, DOWN, RIGHT, LEFT].find(
+        ({ dx, dy }) => dx === x - G_A_M_E.empty.x && dy === y - G_A_M_E.empty.y
+      );
+
+      direction && G_A_M_E.move(direction);
+    },
     click: (e) => {
       const el = tiles.find((el) => el.contains(e.target));
 
