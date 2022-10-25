@@ -26,6 +26,10 @@ module.exports = (env) => {
           test: /\.scss|css$/,
           use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
         },
+        {
+          test: /\.(gif|png|jpe?g|svg|xml|ogg|wav|mp3)$/i,
+          type: "asset/resource",
+        }
       ],
     },
     plugins: [
